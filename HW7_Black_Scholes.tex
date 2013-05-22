@@ -1,0 +1,81 @@
+\documentclass{article}
+\title{Black-Scholes Formula}
+\author{Brian Manion}
+\date{May 17, 2013}
+\usepackage{mathtools}
+\begin{document}
+\maketitle
+\section{Introduction}
+    Black-Scholes or sometimes Black-Scholes-Merton is a mathematical model that seeks to explain the behavior of financial derivatives, most commonly options. 
+    It was proposed by Black, Scholes, and Merton in 1972. It gave theoretical support for trading options to hedge positions, 
+	which had been practice but lacked solid support. From the model we are able to calculate what the price of an option should be based on a number of 
+	different factors. Nowadays there are numerous variations of the Black-Scholes model, each of which seeks to improve the model based on certain criteria, 
+	usually at the cost of a significant increase in complexity. This paper will focus on the original model, the basis for all other models.
+\section{Notation}
+There is a bit of notation, we're going to lay it down before we get to the equations.
+\begin{itemize}
+\item[] C = Call option price
+\item[] S = Current stock price (spot price)
+\item[] K = Strike price of the option
+\item[] r = risk-free interest rate
+\item[] $\sigma$ = volatility of the stocks return
+\item[] t = time to option maturity
+\item[] N = normal cumulative distribution function
+\end{itemize}
+
+\section{Black-Scholes Equation}
+The Black-Scholes equation describes the price of an option over time. The derivation of this equation is complex and exceeds the scope of this paper 
+and so we simply provide the equation.
+
+
+\begin{equation}
+\frac{\partial \mathrm C}{ \partial \mathrm t } + \frac{1}{2}\sigma^{2} \mathrm S^{2} \frac{\partial^{2} \mathrm C}{\partial \mathrm C^2}
++ \mathrm r \mathrm S \frac{\partial \mathrm C}{\partial \mathrm S}\ =
+\mathrm r \mathrm C 
+\label{eq:1}
+\end{equation}
+
+Notice that that ~\eqref{eq:1} is a partial differential equation. The solution gives us the formula for the price of a put option.
+
+\section{Black-Scholes formula for European option price}
+\begin{equation}
+\mathrm C(\mathrm S,\mathrm t)= \mathrm N(\mathrm d_1)\mathrm S - \mathrm N(\mathrm d_2) \mathrm K \mathrm e^{-rt}
+\end{equation}
+
+\begin{equation}
+\mathrm d_1= \frac{1}{\sigma \sqrt{\mathrm t}} \left[\ln{\left(\frac{S}{K}}\right) + t\left(r + \frac{\sigma^2}{2} \right) \right]
+\end{equation}
+
+\begin{equation}
+\mathrm d_2= \frac{1}{\sigma \sqrt{\mathrm t}} \left[\ln{\left(\frac{S}{K}}\right) + t\left(r - \frac{\sigma^2}{2} \right) \right]
+\end{equation}
+
+\begin{equation}
+N(x)=\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{x} \mathrm e^{-\frac{1}{2}z^2} dz
+\end{equation}
+
+\section{Example}
+You want buy an IBM European call option with a strike price of \$210. The current stock price is \$208.99 . You calculate the volatility of the stock to be 17\%. 
+The rate at which you can borrow and lend money is 5\% (this is the risk-free interest rate). 
+The time to maturity of the option is 77 days. What price should you pay (per share) for the option contract?
+
+$$\mathrm d_1= \frac{1}{0.17 \sqrt{0.21095}} \left[\ln{\left(\frac{208.99}{210}}\right) + 0.21095\left(0.05 + \frac{0.17^2}{2} \right) \right]=0.1123799$$
+$$\mathrm d_2= \frac{1}{0.17 \sqrt{0.21095}} \left[\ln{\left(\frac{208.99}{210}}\right) + 0.21095\left(0.05 - \frac{0.17^2}{2} \right) \right]=0.0343001$$
+
+Okay now that we've calculated $\mathrm d_1$ and $\mathrm d_2$ we will next calculate $\mathrm N(\mathrm d_1)$ and $\mathrm N(\mathrm d_2)$. However it should be
+Okay now that we've calculated $\mathrm d_1$ and $\mathrm d_2$ we will next calculate $\mathrm N(\mathrm d_1)$ and $\mathrm N(\mathrm d_2)$. It should be noted that it's not possible to evaluate the following integrals by normal means so it is easiest to either use a table or use computer software to evaluate the
+following:
+
+$$N(d_1)=N(0.1123799)=\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{0.1123799} \mathrm e^{-\frac{1}{2}z^2} dz = 0.3516077$$
+$$N(d_2)=N(0.0343001)=\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{0.0343001} \mathrm e^{-\frac{1}{2}z^2} dz = 0.3135993$$
+
+Now we plug these in REFERENCE to calculate the price of the call option (per share)
+
+$$\mathrm C(208.99,0.21095)= (0.3516077)(208.99) - (0.3135993)(210) \mathrm e^{-(0.05)(0.21095)} \approx 2.3454$$
+
+So you should pay around \$2.35 (per share) for the options contract. As a side note, options contracts are sold in lots of 100 shares, 
+so this particular contract would sell for roughly \$235.
+
+
+
+\end{document}}
